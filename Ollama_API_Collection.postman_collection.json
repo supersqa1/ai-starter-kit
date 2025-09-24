@@ -1,0 +1,321 @@
+{
+	"info": {
+		"_postman_id": "dde2b1bd-4c28-4a83-bcbb-dd00bfb95442",
+		"name": "Ollama API Collection",
+		"description": "A comprehensive collection of Ollama API calls for QA automation. This toolkit demonstrates how to manage models, generate text, and handle chat completions.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22122555",
+		"_collection_link": "https://bootcamp-4988.postman.co/workspace/tmp-playground~e8521ff1-8501-4a63-9256-2ec6043a8e01/collection/22122555-dde2b1bd-4c28-4a83-bcbb-dd00bfb95442?action=share&source=collection_link&creator=22122555"
+	},
+	"item": [
+		{
+			"name": "Model Management",
+			"item": [
+				{
+					"name": "List All Local Models",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:11434/api/tags",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "11434",
+							"path": [
+								"api",
+								"tags"
+							]
+						},
+						"description": "Lists all models that are available on your local Ollama server."
+					},
+					"response": []
+				},
+				{
+					"name": "Pull a Model",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"llama3\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:11434/api/pull",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "11434",
+							"path": [
+								"api",
+								"pull"
+							]
+						},
+						"description": "Downloads a model from the Ollama library. Change the 'name' field to the model you want to pull."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Model",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"llama3\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:11434/api/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "11434",
+							"path": [
+								"api",
+								"delete"
+							]
+						},
+						"description": "Deletes a model from your local machine. Be careful with this call as it is not reversible."
+					},
+					"response": []
+				}
+			],
+			"description": "API calls for managing models on your local Ollama server. These are equivalent to the core CLI commands."
+		},
+		{
+			"name": "Generate Completions",
+			"item": [
+				{
+					"name": "Generate Text (Non-Streaming)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"model\": \"llama3\",\n  \"prompt\": \"Write 5 high-level test cases for a user login form.\",\n  \"stream\": false\n}"
+						},
+						"url": {
+							"raw": "http://localhost:11434/api/generate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "11434",
+							"path": [
+								"api",
+								"generate"
+							]
+						},
+						"description": "A basic non-streaming request. The server will respond with the full text once it's completely generated."
+					},
+					"response": []
+				},
+				{
+					"name": "Generate Text (Streaming)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"model\": \"llama3\",\n  \"prompt\": \"Write 5 high-level test cases for a user login form.\",\n  \"stream\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:11434/api/generate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "11434",
+							"path": [
+								"api",
+								"generate"
+							]
+						},
+						"description": "A streaming request. The server will send a continuous stream of tokens until the response is complete. Great for a chat-like experience."
+					},
+					"response": []
+				},
+				{
+					"name": "Generate JSON Output",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"model\": \"llama3\",\n  \"prompt\": \"You are a QA automation expert. Given a user login feature, write a list of 5 high-level test cases in JSON format. The JSON should have a single key called 'test_cases'.\",\n  \"stream\": false,\n  \"format\": \"json\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:11434/api/generate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "11434",
+							"path": [
+								"api",
+								"generate"
+							]
+						},
+						"description": "A non-streaming request that forces the output to be a JSON object, which is perfect for automation."
+					},
+					"response": []
+				},
+				{
+					"name": "Generate with Temperature and Seed",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"model\": \"llama3\",\n  \"prompt\": \"Write a list of 3 test cases for a user login form.\",\n  \"stream\": false,\n  \"options\": {\n    \"temperature\": 0.2, \n    \"seed\": 42\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:11434/api/generate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "11434",
+							"path": [
+								"api",
+								"generate"
+							]
+						},
+						"description": "A request that uses the 'options' parameter to control the randomness of the response. 'temperature' controls creativity, and 'seed' makes the response reproducible."
+					},
+					"response": []
+				}
+			],
+			"description": "API calls for generating text completions. These are best for one-off, stateless requests like generating test cases."
+		},
+		{
+			"name": "Chat Completions",
+			"item": [
+				{
+					"name": "Single-Turn Chat",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"model\": \"llama3\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"content\": \"Write 5 high-level test cases for a user login form.\"\n    }\n  ],\n  \"stream\": false\n}"
+						},
+						"url": {
+							"raw": "http://localhost:11434/api/chat",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "11434",
+							"path": [
+								"api",
+								"chat"
+							]
+						},
+						"description": "A basic, single-turn chat request using the 'messages' array."
+					},
+					"response": []
+				},
+				{
+					"name": "Multi-Turn Chat with Persona",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"model\": \"llama3\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a QA automation expert who helps write test plans.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Write 5 high-level test cases for a user login form.\"\n    }\n  ],\n  \"stream\": false\n}"
+						},
+						"url": {
+							"raw": "http://localhost:11434/api/chat",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "11434",
+							"path": [
+								"api",
+								"chat"
+							]
+						},
+						"description": "A multi-turn chat request with a 'system' message to give the AI a specific persona, which is great for QA-specific tasks."
+					},
+					"response": []
+				},
+				{
+					"name": "Multi-Turn Chat with History",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"model\": \"llama3\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a QA automation expert who helps write test plans.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"I have a user login feature.\"\n    },\n    {\n      \"role\": \"assistant\",\n      \"content\": \"Understood. What are the key functionalities you want to test?\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Generate 5 high-level test cases for the login form.\"\n    }\n  ],\n  \"stream\": false\n}"
+						},
+						"url": {
+							"raw": "http://localhost:11434/api/chat",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "11434",
+							"path": [
+								"api",
+								"chat"
+							]
+						},
+						"description": "A multi-turn chat that includes the full conversation history. The model remembers the previous messages."
+					},
+					"response": []
+				}
+			],
+			"description": "Use these API calls for conversational and multi-turn requests. They handle a list of messages with roles."
+		}
+	]
+}
