@@ -22,9 +22,17 @@ A collection of Python scripts for generating test cases using AI models via Oll
 
 Generates test cases from feature descriptions using AI models.
 
-**Help Command:**
+### generate_test_cases_with_model_manager.py
+
+Enhanced version with automatic model management - checks if models are available and offers to download them with detailed information.
+
+**Help Commands:**
 ```bash
+# V1 (basic)
 python test_case_generators/generate_test_cases.py --help
+
+# With model manager
+python test_case_generators/generate_test_cases_with_model_manager.py --help
 ```
 
 **Output:**
@@ -53,15 +61,26 @@ Examples:
 ## Usage Examples
 
 ```bash
-# Basic usage
+# Basic usage (V1)
 python test_case_generators/generate_test_cases.py "User login with email and password"
 
-# With custom model
-python test_case_generators/generate_test_cases.py "Shopping cart functionality" --model llama3:latest
+# Basic usage (with model manager)
+python test_case_generators/generate_test_cases_with_model_manager.py "User login with email and password"
+
+# With custom model (will auto-download if needed)
+python test_case_generators/generate_test_cases_with_model_manager.py "Shopping cart functionality" --model llama3:latest
 
 # With text output
-python test_case_generators/generate_test_cases.py "File upload feature" --format text
+python test_case_generators/generate_test_cases_with_model_manager.py "File upload feature" --format text
 
 # With custom Ollama URL
-python test_case_generators/generate_test_cases.py "Payment processing" --base-url http://remote-server:11434
+python test_case_generators/generate_test_cases_with_model_manager.py "Payment processing" --base-url http://remote-server:11434
 ```
+
+### Model Manager Features
+
+- **Automatic model checking** - Verifies if requested model is available
+- **Model information display** - Shows size, parameters, and family before download
+- **Interactive confirmation** - Asks user before downloading large models
+- **Progress tracking** - Shows download progress for model pulling
+- **Smart error handling** - Better error messages and recovery
